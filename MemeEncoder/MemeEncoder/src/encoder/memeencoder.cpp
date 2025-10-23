@@ -5,7 +5,7 @@ void MemeEncoder::registerToken(char symbol, const std::string& replacement) {
 }
 
 void MemeEncoder::initialize() {
-	const std::pair<char, const char*> symbolMap[] = {
+	static const std::pair<char, const char*> symbolMap[] = {
 		{'а', "a"}, 
 		{'б', "6"},
 		{'в', "B"},
