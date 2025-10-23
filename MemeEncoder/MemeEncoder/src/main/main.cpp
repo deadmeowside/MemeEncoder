@@ -3,5 +3,5 @@
 int main()
 {
 	MemeEncoder encoder;
-	std::cout << encoder.encode("пизду_выебу") << std::endl;
+	std::cout << encoder.encode("пукич_бабки") << std::endl;
 }
