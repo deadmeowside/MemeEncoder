@@ -1,14 +1,12 @@
-#pragma once
+﻿#pragma once
 #include <string>
-#include <vector>
-
-#include "token/token.h"
+#include <unordered_map>
 
 class MemeEncoder
 {
 private:
-	std::vector<Token> tokens;
-	void registerToken(const Token& token);
+	std::unordered_map<char, std::string> tokens;
+	void registerToken(char symbol, const std::string& replacement);
 
 	void initialize();
 

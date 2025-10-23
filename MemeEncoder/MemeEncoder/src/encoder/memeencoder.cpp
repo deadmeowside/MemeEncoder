@@ -1,81 +1,52 @@
 ﻿#include "memeencoder.h"
 
-std::string mapSymbol(char c) {
-	return std::string();
-}
-
-void MemeEncoder::registerToken(const Token& token) {
-	tokens.push_back(token);
+void MemeEncoder::registerToken(char symbol, const std::string& replacement) {
+	tokens[symbol] = replacement;
 }
 
 void MemeEncoder::initialize() {
-	registerToken(Token('а', "a"));
-	registerToken(Token('б', "6"));
-	registerToken(Token('в', "B"));
-	registerToken(Token('г', "r"));
-	registerToken(Token('д', "D"));
-	registerToken(Token('е', "e"));
-	registerToken(Token('ё', "e"));
-	registerToken(Token('ж', ">|<"));
-	registerToken(Token('з', "3"));
-	registerToken(Token('и', "u"));
-	registerToken(Token('й', "u"));
-	registerToken(Token('к', "K"));
-	registerToken(Token('л', "JI"));
-	registerToken(Token('м', "M"));
-	registerToken(Token('н', "H"));
-	registerToken(Token('о', "o"));
-	registerToken(Token('п', "TT"));
-	registerToken(Token('р', "p"));
-	registerToken(Token('с', "c"));
-	registerToken(Token('т', "T"));
-	registerToken(Token('у', "y"));
-	registerToken(Token('ф', "<|>"));
-	registerToken(Token('х', "x"));
-	registerToken(Token('ц', "Tc"));
-	registerToken(Token('ч', "4"));
-	registerToken(Token('ш', "LLI"));
-	registerToken(Token('щ', "LLI"));
-	registerToken(Token('ъ', "b"));
-	registerToken(Token('ы', "bI"));
-	registerToken(Token('ь', "b"));
-	registerToken(Token('э', "3"));
-	registerToken(Token('ю', "|O"));
-	registerToken(Token('я', "9I"));
+	const std::pair<char, const char*> symbolMap[] = {
+		{'а', "a"}, 
+		{'б', "6"},
+		{'в', "B"},
+		{'г', "r"},
+		{'д', "D"},
+		{'е', "e"},
+		{'ё', "e"},
+		{'ж', ">|<"}, 
+		{'з', "3"},
+		{'и', "u"},
+		{'й', "u"},
+		{'к', "K"},
+		{'л', "JI"},
+		{'м', "M"},
+		{'н', "H"},
+		{'о', "o"},
+		{'п', "TT"},
+		{'р', "p"},
+		{'с', "c"}, 
+		{'т', "T"},
+		{'у', "y"}, 
+		{'ф', "<|>"},
+		{'х', "x"}, 
+		{'ц', "Tc"},
+		{'ч', "4"},
+		{'ш', "LLI"},
+		{'щ', "LLI"}, 
+		{'ъ', "b"}, 
+		{'ы', "bI"},
+		{'ь', "b"},
+		{'э', "3"},
+		{'ю', "|O"}, 
+		{'я', "9I"}
+	};
 
-	registerToken(Token('А', "A"));
-	registerToken(Token('Б', "6"));
-	registerToken(Token('В', "B"));
-	registerToken(Token('Г', "r"));
-	registerToken(Token('Д', "D"));
-	registerToken(Token('Е', "E"));
-	registerToken(Token('Ё', "E"));
-	registerToken(Token('Ж', ">|<"));
-	registerToken(Token('З', "3"));
-	registerToken(Token('И', "U"));
-	registerToken(Token('Й', "U"));
-	registerToken(Token('К', "K"));
-	registerToken(Token('Л', "JI"));
-	registerToken(Token('М', "M"));
-	registerToken(Token('Н', "H"));
-	registerToken(Token('О', "O"));
-	registerToken(Token('П', "TT"));
-	registerToken(Token('Р', "P"));
-	registerToken(Token('С', "C"));
-	registerToken(Token('Т', "T"));
-	registerToken(Token('У', "Y"));
-	registerToken(Token('Ф', "<|>"));
-	registerToken(Token('Х', "X"));
-	registerToken(Token('Ц', "Tc"));
-	registerToken(Token('Ч', "4"));
-	registerToken(Token('Ш', "LLI"));
-	registerToken(Token('Щ', "LLI"));
-	registerToken(Token('Ъ', "b"));
-	registerToken(Token('Ы', "bI"));
-	registerToken(Token('Ь', "b"));
-	registerToken(Token('Э', "3"));
-	registerToken(Token('Ю', "|O"));
-	registerToken(Token('Я', "9I"));
+	for (auto& [lower, repl] : symbolMap) {
+		registerToken(lower, repl);
+
+		wchar_t upper = std::toupper((unsigned char)lower);
+		registerToken(upper, repl);
+	}
 }
 
 MemeEncoder::MemeEncoder() {
@@ -83,25 +54,15 @@ MemeEncoder::MemeEncoder() {
 }
 
 std::string MemeEncoder::encode(const std::string& text) {
-	std::string encodedText;
+	std::string encoded;
+	encoded.reserve(text.size() * 2);
 
-	for(const char& c : text) {
-		bool found = false;
-
-		for(const Token& token : tokens) {
-			if(token.getSymbol() == c) {
-				encodedText += token.getAlternativeRepresentation();
-				found = true;
-
-				break;
-			}
-		}
-
-		if(!found) {
-			encodedText += c;
-		}
-
+	for (char c : text) {
+		if (auto it = tokens.find(c); it != tokens.end())
+			encoded += it->second;
+		else
+			encoded += c;
 	}
 
-	return encodedText;
+	return encoded;
 }

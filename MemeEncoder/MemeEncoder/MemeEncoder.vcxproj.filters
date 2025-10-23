@@ -29,8 +29,5 @@
     <ClInclude Include="src\encoder\memeencoder.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\encoder\token\token.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

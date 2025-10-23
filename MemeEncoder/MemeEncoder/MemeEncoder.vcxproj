@@ -127,7 +127,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\encoder\memeencoder.h" />
-    <ClInclude Include="src\encoder\token\token.h" />
     <ClInclude Include="src\main\main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
